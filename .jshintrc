@@ -1,0 +1,15 @@
+{
+	"bitwise": true,
+	"eqeqeq": true,
+	"latedef": true,
+	"noarg": true,
+	"undef": true,
+	"strict": true,
+	"browser": true,
+	"globals": {
+		"DX": true,
+		"DropDown": true,
+		"Selectbox": true,
+		"console": true
+	}
+}

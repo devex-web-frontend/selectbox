@@ -1,0 +1,312 @@
+/**
+ * @copyright Devexperts
+ *
+ * @requires DX
+ * @requires DX.Dom
+ * @requires DX.Bem
+ * @requires DX.Event
+ * @requires DropDown
+ */
+
+var Selectbox = (function(DX, window, document, undefined) {
+	'use strict';
+
+	var CN_SELECTBOX = 'selectBox',
+		CN_INNER = CN_SELECTBOX + '--inner',
+		CN_LABEL = CN_SELECTBOX + '--label',
+		CN_ARROW = CN_SELECTBOX + '--arrow',
+		TN_OPTGROUP = 'optgroup',
+		KEY_UP_CODE = 38,
+		KEY_DOWN_CODE = 40,
+		ENTER_KEY_CODE = 13,
+		ESC_KEY_CODE = 27,
+		M_ACTIVE = 'active',
+		UPDATE_DELAY = 100,
+		tmpl = [
+			'<div class="' + CN_INNER + '">',
+			'<span class="' + CN_LABEL + '"></span>',
+			'<span class="' + CN_ARROW + '"></span>',
+			'</div>'
+		].join(''),
+		emptyOption = {
+			value: '',
+			label: '',
+			textContent: '',
+			className: ''
+		};
+
+	function map(collection, callback) {
+		return Array.prototype.map.call(collection, callback);
+	}
+
+	function createDataObj(select) {
+		return map(select.children, function(element) {
+			return (element.tagName.toLowerCase() === TN_OPTGROUP) ? parseOptgroup(element) : parseOption(element);
+		});
+	}
+
+	function parseOptgroup(optgroup) {
+		return {
+			title: optgroup.label,
+			options: map(optgroup.children, function(option) {
+				return parseOption(option);
+			})
+		};
+	}
+
+	function parseOption(option) {
+		return {
+			value: option.value,
+			text: option.label || option.textContent,
+			modifiers: splitClassName(option),
+			data: DX.Dom.getData(option)
+		};
+	}
+
+	function splitClassName(element) {
+		return element ? element.className.split(' ') : [];
+	}
+
+	/**
+	 * @constructor
+	 * @param {HTMLSelectElement} select
+	 */
+	return function Selectbox(select) {
+		var block,
+			label,
+			dropDown,
+			updateDelay,
+			currentOption,
+			permanentBlockClassNames,
+			selectId;
+
+		function init() {
+			var dropDownClassName = splitClassName(select);
+
+			permanentBlockClassNames = select.className;
+			select.className = '';
+
+			selectId = select.id || DX.String.createRandomId();
+			select.id = '';
+
+			dropDownClassName.push(CN_SELECTBOX);
+
+			initAppearance();
+			dropDown = new DropDown(block, {
+				modifiers: dropDownClassName
+			});
+			updateData();
+			initListeners();
+
+			DX.Event.trigger(select, Selectbox.E_CREATED, {
+				detail: {
+					eventTarget: select,
+					block: block,
+					dropDown: dropDown.getBlock()
+				}
+			});
+		}
+
+		function initAppearance() {
+			var parent = DX.Dom.getParent(select),
+				selectedIndex = select.selectedIndex;
+
+			block = createBlock();
+			label = block.querySelector('.' + CN_LABEL);
+
+			parent.insertBefore(block, select);
+			block.appendChild(select);
+			select.selectedIndex = selectedIndex;
+		}
+
+		function createBlock() {
+			return DX.Dom.createElement('div', {
+				id: selectId,
+				innerHTML: tmpl
+			});
+		}
+
+		function updateData() {
+			var data = createDataObj(select);
+
+			dropDown.setDataList(data);
+			setIndexBySelectedIndex();
+		}
+
+		function updateBlockClassNames() {
+			block.className = permanentBlockClassNames + ' ' + DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(currentOption));
+		}
+
+		function initListeners() {
+			var dropDownBlock = dropDown.getBlock();
+
+			block.addEventListener('touchend', function(e) {
+				toggleDropdown();
+
+				e.preventDefault();
+			}, true);
+
+			block.addEventListener('click', function(e) {
+				toggleDropdown();
+			}, true);
+
+
+
+			dropDownBlock.addEventListener(DropDown.E_CHANGED, function() {
+				var index = dropDown.getSelectedIndex();
+
+				select.selectedIndex = index;
+				setSelectedByIndex(index);
+				DX.Event.trigger(select, Selectbox.E_CHANGED);
+			}, true);
+
+			dropDownBlock.addEventListener(DropDown.E_SHOWN, setActiveState);
+			dropDownBlock.addEventListener(DropDown.E_HIDDEN, removeActiveState);
+			select.addEventListener(Selectbox.E_CHANGE_VALUE, function() {
+				setIndexBySelectedIndex();
+			}, true);
+			select.addEventListener('DOMNodeInserted', optionListModificationHandler);
+			select.addEventListener('DOMNodeRemoved', optionListModificationHandler);
+		}
+
+		function showDropdown() {
+			if (!isDisabled()) {
+				dropDown.show();
+			}
+		}
+
+		function hideDropdown() {
+			dropDown.hide();
+		}
+
+		function keyDownHandler(e) {
+			var key;
+
+			if (dropDown.isShown()) {
+
+				key = e.key || e.which;
+				var newIndex = dropDown.getHoveredIndex();
+
+				if (key === KEY_UP_CODE || key === 'Up') {
+					newIndex--;
+					dropDown.setHoveredIndex(newIndex);
+				} else if (key === KEY_DOWN_CODE || key === 'Down') {
+					newIndex++;
+					dropDown.setHoveredIndex(newIndex);
+				} else if (key === ENTER_KEY_CODE || key === 'Enter') {
+					var triggerChangeEvent = true;
+					dropDown.hide();
+					dropDown.setSelectedIndex(newIndex, triggerChangeEvent);
+				} else if (key === ESC_KEY_CODE || key === 'Escape') {
+					dropDown.hide();
+				}
+
+			}
+		}
+		function toggleDropdown() {
+			if (isActiveState()) {
+				hideDropdown();
+			} else {
+				showDropdown();
+			}
+		}
+
+		function isDisabled() {
+			return select.disabled;
+		}
+
+		function setActiveState() {
+			DX.Bem.addModifier(block, M_ACTIVE);
+			document.addEventListener(DX.Event.KEY_DOWN, keyDownHandler);
+		}
+
+		function removeActiveState() {
+			DX.Bem.removeModifier(block, M_ACTIVE);
+			document.removeEventListener(DX.Event.KEY_DOWN, keyDownHandler);
+		}
+
+		function isActiveState() {
+			return DX.Bem.hasModifier(block, M_ACTIVE);
+		}
+
+		function optionListModificationHandler() {
+			window.clearTimeout(updateDelay);
+
+			updateDelay = window.setTimeout(updateData, UPDATE_DELAY);
+		}
+
+		function setIndexBySelectedIndex() {
+			var index = select.selectedIndex;
+
+			setSelectedByIndex(index);
+			dropDown.setSelectedIndex(index);
+		}
+
+		function setSelectedByIndex(index) {
+			var option = select.options[index];
+
+			if (option) {
+				currentOption = option;
+			} else {
+				currentOption = emptyOption;
+			}
+
+			setLabel(currentOption.label || currentOption.textContent);
+			updateBlockClassNames();
+
+			if (isDisabled()) {
+				Selectbox.disable(select);
+			} else {
+				Selectbox.enable(select);
+			}
+		}
+
+		function setLabel(str) {
+			label.textContent  = str;
+		}
+
+		function getText() {
+			return currentOption.label || currentOption.textContent;
+		}
+
+		function getValue() {
+			return currentOption.value || currentOption.textContent;
+		}
+
+		this.getValue = getValue;
+		this.getText = getText;
+		this.showDropdown = showDropdown;
+		this.hideDropdown = hideDropdown;
+		this.getBlock = function() {
+			return block;
+		};
+		this.getEventTarget = function() {
+			return select;
+		};
+
+		init();
+	};
+})(DX, window, document);
+
+Selectbox.E_CREATED = 'selectbox:created';
+Selectbox.E_CHANGED = 'selectbox:changed';
+Selectbox.E_CHANGE_VALUE = 'selectbox:changevalue';
+
+
+Selectbox.disable = function disableSelectbox(select) {
+	'use strict';
+
+	var block = DX.Dom.getParent(select);
+
+	DX.Bem.addModifier(block, 'disabled');
+	select.disabled = true;
+};
+
+Selectbox.enable = function enableSelectbox(select) {
+	'use strict';
+
+	var block = DX.Dom.getParent(select);
+
+	DX.Bem.removeModifier(block, 'disabled');
+	select.disabled = false;
+};

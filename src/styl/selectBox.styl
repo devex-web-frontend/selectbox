@@ -1,0 +1,56 @@
+/**
+ * @copyright Devexperts
+ */
+ $selectBoxWidth ?= 100%;
+$selectBoxHeight ?= 24px;
+$selectBoxBorderWidth ?= 1px;
+$selectBoxBorderRadius ?= 3px;
+$selectBoxPadding ?= 8px;
+$selectBoxFontSize ?= inherit;
+$selectBoxArrowWidth ?= 22px;
+
+.selectBox {
+	display: inline-block;
+	box-sizing: border-box;
+	width: $selectBoxWidth;
+	height: $selectBoxHeight;
+	border: solid $selectBoxBorderWidth;
+	border-radius: $selectBoxBorderRadius;
+	font-size: $selectBoxFontSize;
+
+	select {
+		display: none;
+	}
+
+	&--inner {
+		position: relative;
+		box-sizing: border-box;
+		display: block;
+		width: 100%;
+		height: 100%;
+		padding: 0 $selectBoxArrowWidth 0 0;
+		cursor: pointer;
+	}
+
+	&--label {
+		position: relative;
+		box-sizing: border-box;
+		display: block;
+		overflow: ellipsis;
+		width: 100%;
+		height: $selectBoxHeight;
+		padding: 0 $selectBoxPadding;
+		line-height: @height;
+	}
+
+	&--arrow {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		display: inline-block;
+		width: $selectBoxArrowWidth;
+		border-radius: 0 $selectBoxBorderRadius $selectBoxBorderRadius 0;
+	}
+}

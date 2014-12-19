@@ -1,0 +1,28 @@
+.dropDown{
+	display: none;
+	width: 100px;
+
+	&--list{
+		padding: 5px 0;
+	}
+	&--option {
+		list-style: none;
+		background: #f5d2d2;
+		padding: 3px 5px;
+		border-bottom: 1px solid #200707;
+		cursor: pointer;
+		&-selected {
+			background: red;
+		}
+		&:hover,
+		&-hovered {
+			color: #fff;
+		}
+	}
+	&-hidden {
+		display: none;
+	}
+	&-shown {
+		display: block;
+	}
+}

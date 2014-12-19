@@ -1,0 +1,19 @@
+{
+  "name": "SelectBox",
+  "version": "2.0.1",
+  "private": true,
+  "license": "MPL-2.0",
+  "main": "src/selectbox.js",
+  "ignore": [
+    ".*",
+    "test/**",
+    "Gruntfile.js",
+    "karma.*.js",
+    "bower.json",
+    "package.json"
+  ],
+  "dependencies": {
+    "dxjs": "git://github.com/devex-web-frontend/dxjs.git#2.0.3",
+    "dropdown": "git://github.com/devex-web-frontend/dropdown.git#2.0.1"
+  }
+}
