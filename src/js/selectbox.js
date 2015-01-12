@@ -6,6 +6,7 @@
  * @requires DX.Bem
  * @requires DX.Event
  * @requires DropDown
+ * @namespace
  */
 
 var Selectbox = (function(DX, window, document, undefined) {
@@ -68,7 +69,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 	}
 
 	/**
-	 * @constructor
+	 * Creates new selectbox component
+	 * @constructor Selectbox
 	 * @param {HTMLSelectElement} select
 	 */
 	return function Selectbox(select) {
@@ -80,6 +82,11 @@ var Selectbox = (function(DX, window, document, undefined) {
 			permanentBlockClassNames,
 			selectId;
 
+		/**
+		 * Triggers when electbox is created
+		 *
+		 * @event selectbox:created
+		 */
 		function init() {
 			var dropDownClassName = splitClassName(select);
 
@@ -137,6 +144,11 @@ var Selectbox = (function(DX, window, document, undefined) {
 			block.className = permanentBlockClassNames + ' ' + DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(currentOption));
 		}
 
+		/**
+		 * Triggers when selectbox is changed
+		 *
+		 * @event selectbox:changed
+		 */
 		function initListeners() {
 			var dropDownBlock = dropDown.getBlock();
 
@@ -168,13 +180,19 @@ var Selectbox = (function(DX, window, document, undefined) {
 			select.addEventListener('DOMNodeInserted', optionListModificationHandler);
 			select.addEventListener('DOMNodeRemoved', optionListModificationHandler);
 		}
-
+		/**
+		 * Show dropdown
+		 * @method showDropDown
+		 */
 		function showDropdown() {
 			if (!isDisabled()) {
 				dropDown.show();
 			}
 		}
-
+		/**
+		 * Hide dropdown
+		 * @method hideDropDown
+		 */
 		function hideDropdown() {
 			dropDown.hide();
 		}
@@ -234,7 +252,11 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 			updateDelay = window.setTimeout(updateData, UPDATE_DELAY);
 		}
-
+		/**
+		 * Should be fired after external select index change
+		 *
+		 * @event selectbox:changevalue
+		 */
 		function setIndexBySelectedIndex() {
 			var index = select.selectedIndex;
 
@@ -264,11 +286,19 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function setLabel(str) {
 			label.textContent  = str;
 		}
-
+		/**
+		 * Get current label
+		 * @method getText
+		 * @returns {String}
+		 */
 		function getText() {
 			return currentOption.label || currentOption.textContent;
 		}
-
+		/**
+		 * Get current value
+		 * @method getValue
+		 * @returns {Number|String}
+		 */
 		function getValue() {
 			return currentOption.value || currentOption.textContent;
 		}
@@ -277,9 +307,19 @@ var Selectbox = (function(DX, window, document, undefined) {
 		this.getText = getText;
 		this.showDropdown = showDropdown;
 		this.hideDropdown = hideDropdown;
+		/**
+		 * Get HTMLNode containing selectbox
+		 * @method getBlock
+		 * @returns {Node}
+		 */
 		this.getBlock = function() {
 			return block;
 		};
+		/**
+		 * Get element which listens to events
+		 * @method getEventTarget
+		 * @returns {Node}
+		 */
 		this.getEventTarget = function() {
 			return select;
 		};
@@ -288,11 +328,32 @@ var Selectbox = (function(DX, window, document, undefined) {
 	};
 })(DX, window, document);
 
+/** @constant
+ * @type {string}
+ * @default
+ * @memberof Selectbox
+ */
 Selectbox.E_CREATED = 'selectbox:created';
+/** @constant
+ * @type {string}
+ * @default
+ * @memberof Selectbox
+ */
 Selectbox.E_CHANGED = 'selectbox:changed';
+/** @constant
+ * @type {string}
+ * @default
+ * @memberof Selectbox
+ */
 Selectbox.E_CHANGE_VALUE = 'selectbox:changevalue';
 
-
+/**
+ * Disable selectbox
+ * @method disable
+ * @static
+ * @memberof Selectbox
+ * @param {Node} HTMLNode containing select block
+ */
 Selectbox.disable = function disableSelectbox(select) {
 	'use strict';
 
@@ -301,7 +362,13 @@ Selectbox.disable = function disableSelectbox(select) {
 	DX.Bem.addModifier(block, 'disabled');
 	select.disabled = true;
 };
-
+/**
+ * Enable selectbox
+ * @method enable
+ * @static
+ * @memberof Selectbox
+ * @param {Node} HTMLNode containing select block
+ */
 Selectbox.enable = function enableSelectbox(select) {
 	'use strict';
 

@@ -36,6 +36,20 @@ module.exports = function(grunt) {
 				]
 			}
 		},
+		jsdoc : {
+			dist : {
+				src: ['src/js/*.js'],
+				options: {
+					destination: 'doc'
+				}
+			}
+		},
+		jsdoc2md: {
+			oneOutputFile: {
+				src: "src/js/selectbox.js",
+				dest: "doc/documentation.md"
+			}
+		},
 		karma: {
 			options: {
 				singleRun: !isDevelopmentRun,
@@ -72,6 +86,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-interactive-shell');
 	grunt.loadNpmTasks('grunt-jscs-checker');
+	grunt.loadNpmTasks("grunt-jsdoc-to-markdown");
+	grunt.loadNpmTasks('grunt-jsdoc');
 
 	grunt.registerTask('install', ['clean:install', 'shell:install']);
 	grunt.registerTask('css', ['clean:css', 'stylus']);
@@ -81,5 +97,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('test_ui', ['connect:testserver', 'karma:ui']);
 	grunt.registerTask('test', ['check_style', 'test_unit', 'test_ui']);
 	grunt.registerTask('build', ['css','install', 'test']);
+	grunt.registerTask("doc", "jsdoc2md");
 	grunt.registerTask('default', ['build']);
 };
