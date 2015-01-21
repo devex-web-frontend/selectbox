@@ -20,7 +20,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 		KEY_UP_CODE = 38,
 		KEY_DOWN_CODE = 40,
 		ENTER_KEY_CODE = 13,
-		ESC_KEY_CODE = 27,
 		M_ACTIVE = 'active',
 		UPDATE_DELAY = 100,
 		tmpl = [
@@ -215,8 +214,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 					var triggerChangeEvent = true;
 					dropDown.hide();
 					dropDown.setSelectedIndex(newIndex, triggerChangeEvent);
-				} else if (key === ESC_KEY_CODE || key === 'Escape') {
-					dropDown.hide();
 				}
 
 			}

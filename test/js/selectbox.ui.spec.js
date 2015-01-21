@@ -68,12 +68,6 @@ describe('Selectbox', function() {
 			expect(element('.dropDown-shown').count()).toBe(0);
 		});
 
-		it('should hide dropdown when escape is pressed', function() {
-			element('.selectBox').click();
-			keydown(ESC_KEY_CODE);
-
-			expect(element('.dropDown-shown').count()).toBe(0);
-		});
 
 		it('should set hovered element as selected when enter is pressed', function() {
 			element('.selectBox').click();
