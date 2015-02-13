@@ -57,7 +57,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 	function parseOption(option) {
 		return {
 			value: option.value,
-			text: option.label || option.textContent,
+			text: option.label || option.innerHTML,
 			modifiers: splitClassName(option),
 			data: DX.Dom.getData(option)
 		};
