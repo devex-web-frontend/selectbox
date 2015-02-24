@@ -113,6 +113,23 @@ describe('Selectbox ', function() {
 			expect(DropDownMock.instance.isShown()).toBe(false);
 		});
 
+		it('should add "-focus" modifier when select got focus', function() {
+			var selectElement = document.getElementById('test');
+			new Selectbox(selectElement);
+
+			DX.Event.trigger(selectElement , 'focus');
+			expect(document.querySelectorAll('.selectBox-focused').length).toBe(1);
+		});
+
+		it('should remove "-focus" modifier when select lost focus', function() {
+			var selectElement = document.getElementById('test');
+			new Selectbox(selectElement);
+
+			DX.Event.trigger(selectElement , 'focus');
+			expect(document.querySelectorAll('.selectBox-focused').length).toBe(1);
+		});
+
+
 		it('should add "-active" modifier when dropdown shows', function() {
 			var selectElement = document.getElementById('test');
 			new Selectbox(selectElement);

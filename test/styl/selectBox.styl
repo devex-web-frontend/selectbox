@@ -2,7 +2,21 @@ $selectBoxWidth ?= 100px;
 
 .selectBox {
 	width: $selectBoxWidth;
+	overflow: hidden;
+	position: relative;
+
 	&--inner {
 		background-color:  #d3d3d3;
+	}
+
+	select {
+		display: block;
+		position: absolute;
+		left -100%;
+		top -100%;
+	}
+
+	&-focused {
+		border-color: red;
 	}
 }
