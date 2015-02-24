@@ -157,7 +157,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 			select.addEventListener('change', function(e) {
 				setIndexBySelectedIndex();
-				setActiveState();
+				setFocusState();
 			});
 
 			block.addEventListener('touchend', function(e) {
