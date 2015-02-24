@@ -155,6 +155,11 @@ var Selectbox = (function(DX, window, document, undefined) {
 			select.addEventListener('focus', setFocusState);
 			select.addEventListener('blur', removeFocusState);
 
+			select.addEventListener('change', function(e) {
+				setIndexBySelectedIndex();
+				setActiveState();
+			});
+
 			block.addEventListener('touchend', function(e) {
 				toggleDropdown();
 
@@ -164,8 +169,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 			block.addEventListener('click', function(e) {
 				toggleDropdown();
 			}, true);
-
-
 
 			dropDownBlock.addEventListener(DropDown.E_CHANGED, function() {
 				var index = dropDown.getSelectedIndex();

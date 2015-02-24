@@ -247,7 +247,18 @@ describe('Selectbox ', function() {
 	});
 
 	describe('Events API', function() {
+		it('should change value on "change" original selectbox', function() {
+			var selectElement = document.getElementById('test'),
+				selectBox;
 
+			selectBox = new Selectbox(selectElement);
+			selectElement.selectedIndex = 2;
+			DX.Event.trigger(selectElement , 'change');
+
+			expect(selectBox.getValue()).toEqual('super speed');
+			expect(selectBox.getText()).toEqual('Flash');
+
+		});
 	});
 
 	describe('Static Methods', function() {
