@@ -159,7 +159,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function initListeners() {
 			var dropDownBlock = dropDown.getBlock();
 
-			select.addEventListener('focus', function(){
+			select.addEventListener('focus', function() {
 				setFocusState();
 				hasFocus = true;
 			});
