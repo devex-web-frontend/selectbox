@@ -21,6 +21,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		KEY_DOWN_CODE = 40,
 		ENTER_KEY_CODE = 13,
 		M_ACTIVE = 'active',
+		M_FOCUSED = 'focused',
 		UPDATE_DELAY = 100,
 		tmpl = [
 			'<div class="' + CN_INNER + '">',
@@ -140,7 +141,13 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function updateBlockClassNames() {
-			block.className = permanentBlockClassNames + ' ' + DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(currentOption));
+			var classNames = [permanentBlockClassNames, DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(currentOption))];
+
+			if (DX.Bem.hasModifier(block, M_FOCUSED)) {
+				classNames.push(DX.Bem.createModifiedClassName(CN_SELECTBOX, [M_FOCUSED]));
+			}
+
+			block.className = classNames.join(' ');
 		}
 
 		/**
@@ -151,6 +158,14 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function initListeners() {
 			var dropDownBlock = dropDown.getBlock();
 
+			select.addEventListener('focus', setFocusState);
+
+			select.addEventListener('blur', removeFocusState);
+
+			select.addEventListener('change', function(e) {
+				setIndexBySelectedIndex();
+			});
+
 			block.addEventListener('touchend', function(e) {
 				toggleDropdown();
 
@@ -160,8 +175,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 			block.addEventListener('click', function(e) {
 				toggleDropdown();
 			}, true);
-
-
 
 			dropDownBlock.addEventListener(DropDown.E_CHANGED, function() {
 				var index = dropDown.getSelectedIndex();
@@ -233,6 +246,14 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function setActiveState() {
 			DX.Bem.addModifier(block, M_ACTIVE);
 			document.addEventListener(DX.Event.KEY_DOWN, keyDownHandler);
+		}
+
+		function setFocusState() {
+			DX.Bem.addModifier(block, M_FOCUSED);
+		}
+
+		function removeFocusState() {
+			DX.Bem.removeModifier(block, M_FOCUSED);
 		}
 
 		function removeActiveState() {
