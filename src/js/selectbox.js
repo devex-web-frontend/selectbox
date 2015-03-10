@@ -77,7 +77,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 		var block,
 			label,
 			dropDown,
-			hasFocus,
 			updateDelay,
 			currentOption,
 			permanentBlockClassNames,
@@ -144,8 +143,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function updateBlockClassNames() {
 			var classNames = [permanentBlockClassNames, DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(currentOption))];
 
-			if (hasFocus) {
-				classNames.push(DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(M_FOCUSED)));
+			if (DX.Bem.hasModifier(block, M_FOCUSED)) {
+				classNames.push(DX.Bem.createModifiedClassName(CN_SELECTBOX, [M_FOCUSED]));
 			}
 
 			block.className = classNames.join(' ');
@@ -159,15 +158,9 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function initListeners() {
 			var dropDownBlock = dropDown.getBlock();
 
-			select.addEventListener('focus', function() {
-				setFocusState();
-				hasFocus = true;
-			});
+			select.addEventListener('focus', setFocusState);
 
-			select.addEventListener('blur', function() {
-				removeFocusState();
-				hasFocus = false;
-			});
+			select.addEventListener('blur', removeFocusState);
 
 			select.addEventListener('change', function(e) {
 				setIndexBySelectedIndex();
