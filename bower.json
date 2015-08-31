@@ -1,6 +1,6 @@
 {
   "name": "SelectBox",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
   "license": "MPL-2.0",
   "main": "src/selectbox.js",
@@ -14,6 +14,6 @@
   ],
   "dependencies": {
     "dxjs": "devex-web-frontend/dxjs#^2.0.3",
-    "dropdown": "devex-web-frontend/dropdown#^2.1.0"
+    "dropdown": "devex-web-frontend/dropdown#^2.3.0"
   }
 }
