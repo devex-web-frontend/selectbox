@@ -78,7 +78,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 	 * @constructor Selectbox
 	 * @param {HTMLSelectElement} select
 	 */
-	return function Selectbox(select,  customDropDownConfig, customSelectBoxConfig) {
+	return function Selectbox(select, optionsData, customDropDownConfig, customSelectBoxConfig) {
 		var block,
 			label,
 			dropDown,
@@ -109,7 +109,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 			var dropDownConfig = Object.assign({}, customDropDownConfig, {modifiers: dropDownClassName});
 			dropDown = new DropDown(block, dropDownConfig);
-			updateData();
+			updateData(optionsData);
 			initListeners();
 
 			DX.Event.trigger(select, Selectbox.E_CREATED, {
@@ -140,9 +140,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 			});
 		}
 
-		function updateData() {
-			data = createDataObj(select);
-
+		function updateData(newData) {
+			data = newData || createDataObj(select);
 			dropDown.setDataList(data);
 			setIndexBySelectedIndex();
 		}
@@ -336,6 +335,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 		this.getValue = getValue;
 		this.getText = getText;
+		this.updateData = updateData;
 		this.showDropdown = showDropdown;
 		this.hideDropdown = hideDropdown;
 		/**
