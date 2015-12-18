@@ -23,17 +23,19 @@ var Selectbox = (function(DX, window, document, undefined) {
 		M_ACTIVE = 'active',
 		M_FOCUSED = 'focused',
 		UPDATE_DELAY = 100,
-		tmpl = [
-			'<div class="' + CN_INNER + '">',
-			'<span class="' + CN_LABEL + '"></span>',
-			'<span class="' + CN_ARROW + '"></span>',
-			'</div>'
-		].join(''),
-		emptyOption = {
-			value: '',
-			label: '',
-			textContent: '',
-			className: ''
+		defaults = {
+			tmpl: [
+				'<div class="' + CN_INNER + '">',
+				'<span class="' + CN_LABEL + '"></span>',
+				'<span class="' + CN_ARROW + '"></span>',
+				'</div>'
+			].join(''),
+			emptyOption: {
+				value: '',
+				label: '',
+				textContent: '',
+				className: ''
+			}
 		};
 
 	function map(collection, callback) {
@@ -131,7 +133,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function createBlock() {
 			return DX.Dom.createElement('div', {
 				id: selectId,
-				innerHTML: tmpl
+				innerHTML: defaults.tmpl
 			});
 		}
 
@@ -295,7 +297,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 			if (option) {
 				currentOption = option;
 			} else {
-				currentOption = emptyOption;
+				currentOption = defaults.emptyOption;
 			}
 
 			setLabel(currentOption.label || currentOption.textContent);
