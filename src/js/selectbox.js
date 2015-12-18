@@ -143,7 +143,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function updateBlockClassNames() {
-			var classNames = [permanentBlockClassNames, DX.Bem.createModifiedClassName(CN_SELECTBOX, splitClassName(currentOption))];
+			var classNames = [permanentBlockClassNames, DX.Bem.createModifiedClassName(CN_SELECTBOX,
+				splitClassName(currentOption))];
 
 			if (DX.Bem.hasModifier(block, M_FOCUSED)) {
 				classNames.push(DX.Bem.createModifiedClassName(CN_SELECTBOX, [M_FOCUSED]));
@@ -194,6 +195,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 			select.addEventListener('DOMNodeInserted', optionListModificationHandler);
 			select.addEventListener('DOMNodeRemoved', optionListModificationHandler);
 		}
+
 		/**
 		 * Show dropdown
 		 * @method showDropDown
@@ -203,6 +205,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 				dropDown.show();
 			}
 		}
+
 		/**
 		 * Hide dropdown
 		 * @method hideDropDown
@@ -233,6 +236,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 			}
 		}
+
 		function toggleDropdown() {
 			if (isActiveState()) {
 				hideDropdown();
@@ -272,6 +276,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 			updateDelay = window.setTimeout(updateData, UPDATE_DELAY);
 		}
+
 		/**
 		 * Should be fired after external select index change
 		 *
@@ -304,8 +309,9 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function setLabel(str) {
-			label.textContent  = str;
+			label.textContent = str;
 		}
+
 		/**
 		 * Get current label
 		 * @method getText
@@ -314,6 +320,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function getText() {
 			return currentOption.label || currentOption.textContent;
 		}
+
 		/**
 		 * Get current value
 		 * @method getValue
