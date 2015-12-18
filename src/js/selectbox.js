@@ -56,12 +56,14 @@ var Selectbox = (function(DX, window, document, undefined) {
 	}
 
 	function parseOption(option) {
-		return {
+		var option = {
 			value: option.value,
 			text: option.label || option.innerHTML,
 			modifiers: splitClassName(option),
 			data: DX.Dom.getData(option)
 		};
+		option = Object.assign({}, option, option.data);
+		return option;
 	}
 
 	function splitClassName(element) {
@@ -73,7 +75,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 	 * @constructor Selectbox
 	 * @param {HTMLSelectElement} select
 	 */
-	return function Selectbox(select) {
+	return function Selectbox(select, customSelectboxConfig, customDropdownConfig) {
 		var block,
 			label,
 			dropDown,
@@ -99,9 +101,9 @@ var Selectbox = (function(DX, window, document, undefined) {
 			dropDownClassName.push(CN_SELECTBOX);
 
 			initAppearance();
-			dropDown = new DropDown(block, {
-				modifiers: dropDownClassName
-			});
+
+			var dropDownConfig = Object.assign({}, customDropdownConfig, {modifiers: dropDownClassName});
+			dropDown = new DropDown(block, dropDownConfig);
 			updateData();
 			initListeners();
 

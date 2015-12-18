@@ -1,23 +1,34 @@
-.dropDown{
+.dropDown {
 	display: none;
 	width: 100px;
 
-	&--list{
+	&--list {
 		padding: 5px 0;
 	}
 	&--option {
 		list-style: none;
-		background: #f5d2d2;
+		background: #F5D2D2;
 		padding: 3px 5px;
 		border-bottom: 1px solid #200707;
 		cursor: pointer;
+		.current {
+			display: none;
+		}
+		.icon {
+			background: blue;
+			color: white;
+		}
 		&-selected {
 			background: red;
+			.current {
+				display: inline-block;
+			}
 		}
 		&:hover,
 		&-hovered {
-			color: #fff;
+			color: #FFF;
 		}
+
 	}
 	&-hidden {
 		display: none;

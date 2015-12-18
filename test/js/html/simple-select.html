@@ -26,8 +26,18 @@
 	<option value="2" class="opt2">second</option>
 	<option value="3" class="opt3">last</option>
 </select>
+<select name="test2" id="test2">
+	<option value="1" class="opt1"  data-icon="$">first</option>
+	<option value="2" class="opt2"  data-icon="%">second</option>
+	<option value="3" class="opt3"  data-icon="&" data-icon-num="2">last</option>
+</select>
 <script type="text/javascript">
+	var customOptions = {
+		optionInnerTmpl: '<span class="icon">{%= icon %}{%= iconNum %}</span> {%= text %}',
+		currentMarkTmpl: ' <span class="current">current</span>'
+	};
 	new Selectbox(document.getElementById('test'));
+	new Selectbox(document.getElementById('test2'), null, customOptions);
 </script>
 </body>
 </html>
