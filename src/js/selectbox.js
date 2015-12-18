@@ -35,7 +35,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 				label: '',
 				textContent: '',
 				className: ''
-			}
+			},
+			labelTmpl: '{%= text %}'
 		};
 
 	function map(collection, callback) {
@@ -77,14 +78,16 @@ var Selectbox = (function(DX, window, document, undefined) {
 	 * @constructor Selectbox
 	 * @param {HTMLSelectElement} select
 	 */
-	return function Selectbox(select, customSelectboxConfig, customDropdownConfig) {
+	return function Selectbox(select,  customDropDownConfig, customSelectBoxConfig) {
 		var block,
 			label,
 			dropDown,
 			updateDelay,
 			currentOption,
 			permanentBlockClassNames,
-			selectId;
+			selectId,
+			selectBoxConfig,
+			data;
 
 		/**
 		 * Triggers when electbox is created
@@ -93,7 +96,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		 */
 		function init() {
 			var dropDownClassName = splitClassName(select);
-
+			selectBoxConfig = Object.assign({}, defaults,customSelectBoxConfig);
 			permanentBlockClassNames = select.className;
 			select.className = '';
 
@@ -104,7 +107,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 			initAppearance();
 
-			var dropDownConfig = Object.assign({}, customDropdownConfig, {modifiers: dropDownClassName});
+			var dropDownConfig = Object.assign({}, customDropDownConfig, {modifiers: dropDownClassName});
 			dropDown = new DropDown(block, dropDownConfig);
 			updateData();
 			initListeners();
@@ -133,12 +136,12 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function createBlock() {
 			return DX.Dom.createElement('div', {
 				id: selectId,
-				innerHTML: defaults.tmpl
+				innerHTML: selectBoxConfig.tmpl
 			});
 		}
 
 		function updateData() {
-			var data = createDataObj(select);
+			data = createDataObj(select);
 
 			dropDown.setDataList(data);
 			setIndexBySelectedIndex();
@@ -297,10 +300,9 @@ var Selectbox = (function(DX, window, document, undefined) {
 			if (option) {
 				currentOption = option;
 			} else {
-				currentOption = defaults.emptyOption;
+				currentOption = selectBoxConfig.emptyOption;
 			}
-
-			setLabel(currentOption.label || currentOption.textContent);
+			setLabel(data[index]);
 			updateBlockClassNames();
 
 			if (isDisabled()) {
@@ -310,8 +312,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 			}
 		}
 
-		function setLabel(str) {
-			label.textContent = str;
+		function setLabel(data) {
+			label.innerHTML = DX.Tmpl.process(selectBoxConfig.labelTmpl, data);
 		}
 
 		/**
