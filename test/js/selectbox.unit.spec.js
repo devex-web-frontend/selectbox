@@ -1,12 +1,21 @@
 describe('Selectbox ', function() {
 	var simpleSelectTmpl = [
 		'<select id="test" class="justiceLeague heroes">',
-			'<option class="superman" value="super power" data-man-of-steel="yeah">Superman</option>',
-			'<option class="batman" value="super rich" data-friend="Robin" data-foe="Penguin">Batman</option>',
-			'<option class="flash" value="super speed" data-status="not available">Flash</option>',
+		'<option class="superman" value="super power" data-man-of-steel="yeah">Superman</option>',
+		'<option class="batman" value="super rich" data-friend="Robin" data-foe="Penguin">Batman</option>',
+		'<option class="flash" value="super speed" data-status="not available">Flash</option>',
 		'</select>'
 	].join('');
-
+	var alternativeData = [
+		{
+			value: 1,
+			text: 'text1'
+		}, {
+			value: 2,
+			text: 'text2'
+		}
+	];
+	var dropdownModifiers = {modifiers: ['justiceLeague', 'heroes', 'selectBox']};
 	beforeEach(function() {
 		document.body.innerHTML = simpleSelectTmpl;
 		window.DropDown = DropDownMock;
@@ -106,7 +115,7 @@ describe('Selectbox ', function() {
 
 		it('should hide dropdown', function() {
 			var selectElement = document.getElementById('test'),
-					testSelectBox;
+				testSelectBox;
 			testSelectBox = new Selectbox(selectElement);
 			testSelectBox.showDropdown();
 			testSelectBox.hideDropdown();
@@ -117,7 +126,7 @@ describe('Selectbox ', function() {
 			var selectElement = document.getElementById('test');
 			new Selectbox(selectElement);
 
-			DX.Event.trigger(selectElement , 'focus');
+			DX.Event.trigger(selectElement, 'focus');
 			expect(document.querySelectorAll('.selectBox-focused').length).toBe(1);
 		});
 
@@ -125,7 +134,7 @@ describe('Selectbox ', function() {
 			var selectElement = document.getElementById('test');
 			new Selectbox(selectElement);
 
-			DX.Event.trigger(selectElement , 'focus');
+			DX.Event.trigger(selectElement, 'focus');
 			expect(document.querySelectorAll('.selectBox-focused').length).toBe(1);
 		});
 
@@ -135,7 +144,7 @@ describe('Selectbox ', function() {
 			new Selectbox(selectElement);
 
 			var dropDownElement = document.querySelector('.dropDown');
-			DX.Event.trigger(dropDownElement , DropDown.E_SHOWN);
+			DX.Event.trigger(dropDownElement, DropDown.E_SHOWN);
 			expect(document.querySelectorAll('.selectBox-active').length).toBe(1);
 		});
 
@@ -148,11 +157,44 @@ describe('Selectbox ', function() {
 			DX.Event.trigger(dropDownElement, DropDown.E_HIDDEN);
 			expect(document.querySelectorAll('.selectBox-active').length).toBe(0);
 		});
+		it('should pass modifiers to dropdown', function() {
+			var selectElement = document.getElementById('test');
+			new Selectbox(selectElement, null);
+			var config = window.DropDown.instance.___getConfig();
+			expect(config).toEqual(dropdownModifiers);
+		});
+		describe('custom templates', function() {
+			it('should pass custom dropdown options to dropdown', function() {
+				var selectElement = document.getElementById('test');
+				var customDropDownOptions = {
+					one: 123
+				};
+				var completeDDConfig = Object.assign({}, customDropDownOptions, dropdownModifiers);
+				new Selectbox(selectElement, null, customDropDownOptions);
+				var config = window.DropDown.instance.___getConfig();
+				expect(config).toEqual(completeDDConfig);
+			});
+			it('should use passed dataobject instead of select element data', function() {
+				var selectElement = document.getElementById('test');
+				new Selectbox(selectElement, alternativeData);
+				var dropdownData = window.DropDown.instance.___getDataList();
+				expect(dropdownData).toEqual(alternativeData);
+			});
+			it('should use custom selectbox options', function() {
+				var customSelectBoxOptions = {
+					labelTmpl: '123{%= text %}'
+				};
+				var selectElement = document.getElementById('test');
+				new Selectbox(selectElement, null, null, customSelectBoxOptions);
 
+				var label = document.querySelector('.selectBox--label');
+				expect(label.innerHTML).toEqual('123Superman');
+			});
+		});
 		describe('E_CREATED', function() {
 			it('should be triggered once after selectbox created', function() {
 				var test = document.getElementById('test'),
-						eventHandler = jasmine.createSpy('created');
+					eventHandler = jasmine.createSpy('created');
 
 				test.addEventListener(Selectbox.E_CREATED, eventHandler);
 
@@ -164,9 +206,9 @@ describe('Selectbox ', function() {
 
 			it('should pass block, dropDown and eventTarget to e.detail', function() {
 				var test = document.getElementById('test'),
-						testBlock,
-						testDropdown,
-						testEventTarget;
+					testBlock,
+					testDropdown,
+					testEventTarget;
 
 				test.addEventListener(Selectbox.E_CREATED, function(e) {
 					testBlock = e.detail.block;
@@ -187,7 +229,7 @@ describe('Selectbox ', function() {
 		describe('#getValue()', function() {
 			it('should return empty string (as value) when all elements removed by js', function() {
 				var selectElement = document.getElementById('test'),
-						select = new Selectbox(selectElement);
+					select = new Selectbox(selectElement);
 
 				expect(select.getValue()).toBe('super power');
 
@@ -206,7 +248,7 @@ describe('Selectbox ', function() {
 
 			it('should return empty string when Selectbox initialized on empty select', function() {
 				var selectElement = document.getElementById('test'),
-						selectbox;
+					selectbox;
 
 				selectElement.innerHTML = '';
 				selectbox = new Selectbox(selectElement);
@@ -216,7 +258,7 @@ describe('Selectbox ', function() {
 
 			it('should return correctly value Selectbox initialized on select with selectedIndex <> 0', function() {
 				var selectElement = document.getElementById('test'),
-						selectbox;
+					selectbox;
 
 				selectElement.selectedIndex = 1;
 				selectbox = new Selectbox(selectElement);
@@ -228,7 +270,7 @@ describe('Selectbox ', function() {
 		describe('#getText()', function() {
 			it('should return empty string when Selectbox initialized on empty select', function() {
 				var selectElement = document.getElementById('test'),
-						selectbox;
+					selectbox;
 
 				selectElement.innerHTML = '';
 				selectbox = new Selectbox(selectElement);
@@ -253,7 +295,7 @@ describe('Selectbox ', function() {
 
 			selectBox = new Selectbox(selectElement);
 			selectElement.selectedIndex = 2;
-			DX.Event.trigger(selectElement , 'change');
+			DX.Event.trigger(selectElement, 'change');
 
 			expect(selectBox.getValue()).toEqual('super speed');
 			expect(selectBox.getText()).toEqual('Flash');

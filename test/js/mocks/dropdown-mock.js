@@ -24,6 +24,10 @@ var DropDownMock = (function(DX, window, document, undefined) {
 			return dataList;
 		}
 
+		function getConfig() {
+			return config;
+		}
+
 		function show() {
 			isDropDownShown = true;
 		}
@@ -59,6 +63,7 @@ var DropDownMock = (function(DX, window, document, undefined) {
 		this.getBlock = getBlock;
 
 		this.___getDataList = getDataList;
+		this.___getConfig = getConfig;
 	}
 
 	return DropDownMock;

@@ -11,6 +11,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/babel-core/browser-polyfill.js',
 	  'lib/es5-shim/es5-shim.js',
 	  'lib/object-array-utils/**/*.js',
 	  'lib/classlist/**/classList.js',
@@ -24,7 +25,7 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      
+
     ],
 
     // test results reporter to use

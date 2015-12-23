@@ -58,12 +58,12 @@ var Selectbox = (function(DX, window, document, undefined) {
 		};
 	}
 
-	function parseOption(option) {
+	function parseOption(optionNode) {
 		var option = {
-			value: option.value,
-			text: option.label || option.innerHTML,
-			modifiers: splitClassName(option),
-			data: DX.Dom.getData(option)
+			value: optionNode.value,
+			text: optionNode.label || optionNode.innerHTML,
+			modifiers: splitClassName(optionNode),
+			data: DX.Dom.getData(optionNode)
 		};
 		option = Object.assign({}, option, option.data);
 		return option;
@@ -96,7 +96,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		 */
 		function init() {
 			var dropDownClassName = splitClassName(select);
-			selectBoxConfig = Object.assign({}, defaults,customSelectBoxConfig);
+			selectBoxConfig = Object.assign({}, defaults, customSelectBoxConfig);
 			permanentBlockClassNames = select.className;
 			select.className = '';
 
@@ -312,7 +312,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function setLabel(data) {
-			label.innerHTML = DX.Tmpl.process(selectBoxConfig.labelTmpl, data);
+			label.innerHTML = data ? DX.Tmpl.process(selectBoxConfig.labelTmpl, data) : '';
 		}
 
 		/**
@@ -383,7 +383,7 @@ Selectbox.E_CHANGE_VALUE = 'selectbox:changevalue';
  * @method disable
  * @static
  * @memberof Selectbox
- * @param {Node} HTMLNode containing select block
+ * @param {Node} select containing select block
  */
 Selectbox.disable = function disableSelectbox(select) {
 	'use strict';
@@ -398,7 +398,7 @@ Selectbox.disable = function disableSelectbox(select) {
  * @method enable
  * @static
  * @memberof Selectbox
- * @param {Node} HTMLNode containing select block
+ * @param {Node} select containing select block
  */
 Selectbox.enable = function enableSelectbox(select) {
 	'use strict';
