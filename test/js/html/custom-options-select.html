@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Test</title>
+	<script src="../../../lib/es5-shim/es5-shim.js"></script>
+	<script type="text/javascript" src="../../../lib/object-array-utils/src/array.js"></script>
+	<script type="text/javascript" src="../../../lib/object-array-utils/src/object.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.core.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.bem.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.date.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.dom.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.event.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.measure.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.string.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.tmpl.js"></script>
+	<script type="text/javascript" src="../../../lib/dropdown/src/js/dropdown.js"></script>
+	<script type="text/javascript" src="../../../src/js/selectbox.js"></script>
+	<link rel="stylesheet" media="all" href="../../../test/css/selectBox.css">
+	<link rel="stylesheet" media="all" href="../../../test/css/dropDown.css">
+
+</head>
+<body>
+<select name="test" id="test">
+	<option value="1" class="opt1">first</option>
+	<option value="2" class="opt2">second</option>
+	<option value="3" class="opt3">last</option>
+</select>
+<select name="test2" id="test2">
+	<option value="1" class="opt1" data-icon="$">first</option>
+	<option value="2" class="opt2" data-icon="%">second</option>
+	<option value="3" class="opt3" data-icon="&" data-icon-num="2">last</option>
+</select>
+<select name="test3" id="test3">
+	<option value="1" class="opt1">will be ignored</option>
+</select>
+<script type="text/javascript">
+	var customDropDownOptions = {
+		optionInnerTmpl: '<span class="icon">{%= icon %}{%= iconNum %}</span> {%= text %}',
+		currentMarkTmpl: '<span class="current">current</span>'
+	};
+	var customSelectBoxOptions = {
+		labelTmpl: '<span class="icon">{%= icon %}{%= iconNum %}</span> {%= text %}'
+	};
+	var data = [
+		{"value": "1", "text": "wow", "modifiers": ["opt1"], "icon": "♡"},
+		{"value": "2", "text": "such", "modifiers": ["opt3"], "icon": "♥", iconNum: '3'},
+		{"value": "3", "text": "dropdown", "modifiers": ["opt3"], "icon": "♡"}
+	];
+
+	new Selectbox(document.getElementById('test'));
+	new Selectbox(document.getElementById('test2'), null, customDropDownOptions, customSelectBoxOptions);
+	new Selectbox(document.getElementById('test3'), data, customDropDownOptions, customSelectBoxOptions);
+</script>
+</body>
+</html>
