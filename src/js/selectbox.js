@@ -27,9 +27,10 @@ var Selectbox = (function(DX, window, document, undefined) {
 			tmpl: [
 				'<div class="' + CN_INNER + '">',
 				'<span class="' + CN_LABEL + '"></span>',
-				'<span class="' + CN_ARROW + '"></span>',
+				'{%= arrowTmpl %}',
 				'</div>'
 			].join(''),
+			arrowTmpl : '<span class="' + CN_ARROW + '"></span>',
 			emptyOption: {
 				value: '',
 				label: '',
@@ -97,6 +98,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function init() {
 			var dropDownClassName = splitClassName(select);
 			selectBoxConfig = Object.assign({}, defaults, customSelectBoxConfig);
+			console.log(123, customSelectBoxConfig);
+			console.log(123, selectBoxConfig);
 			permanentBlockClassNames = select.className;
 			select.className = '';
 
@@ -134,9 +137,10 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function createBlock() {
+			console.log(selectBoxConfig.tmpl, selectBoxConfig)
 			return DX.Dom.createElement('div', {
 				id: selectId,
-				innerHTML: selectBoxConfig.tmpl
+				innerHTML: DX.Tmpl.process(selectBoxConfig.tmpl, selectBoxConfig)
 			});
 		}
 
