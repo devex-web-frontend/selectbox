@@ -5,6 +5,7 @@
  * @requires DX.Dom
  * @requires DX.Bem
  * @requires DX.Event
+ * @requires DX.Tmpl
  * @requires DropDown
  * @namespace
  */
@@ -98,8 +99,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 		function init() {
 			var dropDownClassName = splitClassName(select);
 			selectBoxConfig = Object.assign({}, defaults, customSelectBoxConfig);
-			console.log(123, customSelectBoxConfig);
-			console.log(123, selectBoxConfig);
 			permanentBlockClassNames = select.className;
 			select.className = '';
 
