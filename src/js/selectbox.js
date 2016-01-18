@@ -31,7 +31,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 				'{%= arrowTmpl %}',
 				'</div>'
 			].join(''),
-			arrowTmpl : '<span class="' + CN_ARROW + '"></span>',
+			arrowTmpl: '<span class="' + CN_ARROW + '"></span>',
 			emptyOption: {
 				value: '',
 				label: '',
@@ -79,6 +79,9 @@ var Selectbox = (function(DX, window, document, undefined) {
 	 * Creates new selectbox component
 	 * @constructor Selectbox
 	 * @param {HTMLSelectElement} select
+	 * @param {Object} optionsData data as an Object, not to be taken from select element
+	 * @param {Object} customDropDownConfig
+	 * @param {Object} customSelectBoxConfig
 	 */
 	return function Selectbox(select, optionsData, customDropDownConfig, customSelectBoxConfig) {
 		var block,
@@ -136,7 +139,6 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function createBlock() {
-			console.log(selectBoxConfig.tmpl, selectBoxConfig)
 			return DX.Dom.createElement('div', {
 				id: selectId,
 				innerHTML: DX.Tmpl.process(selectBoxConfig.tmpl, selectBoxConfig)
