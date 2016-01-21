@@ -6,6 +6,9 @@ describe('Selectbox ', function() {
 		'<option class="flash" value="super speed" data-status="not available">Flash</option>',
 		'</select>'
 	].join('');
+	var emptySelectTmpl = [
+		'<select id="test"></select>'
+	].join('');
 	var alternativeData = [
 		{
 			value: 1,
@@ -179,6 +182,13 @@ describe('Selectbox ', function() {
 				new Selectbox(selectElement, alternativeData);
 				var dropdownData = window.DropDown.instance.___getDataList();
 				expect(dropdownData).toEqual(alternativeData);
+			});
+			it('should set selected index as 0 if custom dataobject is passed ad select if empty', function() {
+				document.body.innerHTML = emptySelectTmpl;
+				var selectElement = document.getElementById('test');
+				new Selectbox(selectElement, alternativeData);
+				var selectedIndex = window.DropDown.instance.getSelectedIndex();
+				expect(selectedIndex).toEqual(0);
 			});
 			it('should use custom selectbox options', function() {
 				var customSelectBoxOptions = {

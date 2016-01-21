@@ -292,7 +292,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		 * @event selectbox:changevalue
 		 */
 		function setIndexBySelectedIndex() {
-			var index = select.selectedIndex;
+			var index = select.options.length ? select.selectedIndex : 0;
 
 			setSelectedByIndex(index);
 			dropDown.setSelectedIndex(index);
