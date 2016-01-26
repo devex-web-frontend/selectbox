@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Test</title>
+	<script src="../../../lib/es5-shim/es5-shim.js"></script>
+	<script type="text/javascript" src="../../../lib/object-array-utils/src/array.js"></script>
+	<script type="text/javascript" src="../../../lib/object-array-utils/src/object.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.core.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.bem.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.date.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.dom.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.event.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.measure.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.string.js"></script>
+	<script type="text/javascript" src="../../../lib/dxjs/src/dx.tmpl.js"></script>
+	<script type="text/javascript" src="../../../lib/dropdown/src/js/dropdown.js"></script>
+	<script type="text/javascript" src="../../../src/js/selectbox.js"></script>
+	<link rel="stylesheet" media="all" href="../../../test/css/selectBox.css">
+	<link rel="stylesheet" media="all" href="../../../test/css/dropDown.css">
+
+</head>
+<body>
+<select name="test" id="test">
+	<optgroup label="123">
+	<option value="1" class="opt1">first</option>
+	<option value="2" class="opt2">second</option>
+	<option value="3" class="opt3">last</option>
+	</optgroup>
+	<optgroup label="123">
+	<option value="1" class="opt1">so first</option>
+	<option value="2" class="opt2">such second</option>
+	<option value="3" class="opt3">wow last</option>
+	</optgroup>
+</select>
+<select name="test2" id="test2">
+</select>
+
+<script type="text/javascript">
+
+	var data = [
+		{
+			options: [
+				{"value": "1", "text": "wow"},
+				{"value": "2", "text": "such"},
+				{"value": "3", "text": "dropdown"}
+			]
+		},
+		{
+			options: [
+				{"value": "4", "text": "wow2"},
+				{"value": "5", "text": "such2"},
+				{"value": "6", "text": "dropdown2"}
+			]
+		}
+	];
+
+	new Selectbox(document.getElementById('test'));
+	new Selectbox(document.getElementById('test2'), data);
+</script>
+</body>
+</html>

@@ -92,7 +92,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 			permanentBlockClassNames,
 			selectId,
 			selectBoxConfig,
-			data;
+			data,
+			flatData;
 
 		/**
 		 * Triggers when electbox is created
@@ -147,13 +148,14 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 		function updateData(newData) {
 			data = newData || createDataObj(select);
+			flattenData();
 			dropDown.setDataList(data);
 			setIndexBySelectedIndex();
 		}
 
 		function updateBlockClassNames() {
 			var classNames = [permanentBlockClassNames, DX.Bem.createModifiedClassName(CN_SELECTBOX,
-				splitClassName(currentOption))];
+				currentOption.modifiers || [])];
 
 			if (DX.Bem.hasModifier(block, M_FOCUSED)) {
 				classNames.push(DX.Bem.createModifiedClassName(CN_SELECTBOX, [M_FOCUSED]));
@@ -286,6 +288,17 @@ var Selectbox = (function(DX, window, document, undefined) {
 			updateDelay = window.setTimeout(updateData, UPDATE_DELAY);
 		}
 
+		function flattenData() {
+			flatData = [];
+			data.forEach(function(subData) {
+				if (Array.isArray(subData.options)) {
+					flatData = flatData.concat(subData.options);
+				} else {
+					flatData.push(subData);
+				}
+			});
+		}
+
 		/**
 		 * Should be fired after external select index change
 		 *
@@ -299,14 +312,14 @@ var Selectbox = (function(DX, window, document, undefined) {
 		}
 
 		function setSelectedByIndex(index) {
-			var option = select.options[index];
+			var option = flatData[index];
 
 			if (option) {
 				currentOption = option;
 			} else {
 				currentOption = selectBoxConfig.emptyOption;
 			}
-			setLabel(data[index]);
+			setLabel(option);
 			updateBlockClassNames();
 
 			if (isDisabled()) {
@@ -326,7 +339,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 		 * @returns {String}
 		 */
 		function getText() {
-			return currentOption.label || currentOption.textContent;
+			var selectedItem = flatData[dropDown.getSelectedIndex()];
+			return selectedItem ? selectedItem.text : '';
 		}
 
 		/**
@@ -335,7 +349,8 @@ var Selectbox = (function(DX, window, document, undefined) {
 		 * @returns {Number|String}
 		 */
 		function getValue() {
-			return currentOption.value || currentOption.textContent;
+			var selectedItem = flatData[dropDown.getSelectedIndex()];
+			return selectedItem ? selectedItem.value : '';
 		}
 
 		this.getValue = getValue;

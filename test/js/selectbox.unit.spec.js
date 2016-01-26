@@ -177,19 +177,7 @@ describe('Selectbox ', function() {
 				var config = window.DropDown.instance.___getConfig();
 				expect(config).toEqual(completeDDConfig);
 			});
-			it('should use passed dataobject instead of select element data', function() {
-				var selectElement = document.getElementById('test');
-				new Selectbox(selectElement, alternativeData);
-				var dropdownData = window.DropDown.instance.___getDataList();
-				expect(dropdownData).toEqual(alternativeData);
-			});
-			it('should set selected index as 0 if custom dataobject is passed ad select if empty', function() {
-				document.body.innerHTML = emptySelectTmpl;
-				var selectElement = document.getElementById('test');
-				new Selectbox(selectElement, alternativeData);
-				var selectedIndex = window.DropDown.instance.getSelectedIndex();
-				expect(selectedIndex).toEqual(0);
-			});
+
 			it('should use custom selectbox options', function() {
 				var customSelectBoxOptions = {
 					labelTmpl: '123{%= text %}'
@@ -200,6 +188,23 @@ describe('Selectbox ', function() {
 				var label = document.querySelector('.selectBox--label');
 				expect(label.innerHTML).toEqual('123Superman');
 			});
+
+		});
+		describe('custom dataobject', function() {
+			it('should use passed dataobject instead of select element data', function() {
+				var selectElement = document.getElementById('test');
+				new Selectbox(selectElement, alternativeData);
+				var dropdownData = window.DropDown.instance.___getDataList();
+				expect(dropdownData).toEqual(alternativeData);
+			});
+			it('should set selected index as 0 if custom dataobject is passed and select if empty', function() {
+				document.body.innerHTML = emptySelectTmpl;
+				var selectElement = document.getElementById('test');
+				new Selectbox(selectElement, alternativeData);
+				var selectedIndex = window.DropDown.instance.getSelectedIndex();
+				expect(selectedIndex).toEqual(0);
+			});
+
 		});
 		describe('E_CREATED', function() {
 			it('should be triggered once after selectbox created', function() {
