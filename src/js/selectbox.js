@@ -53,7 +53,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 	function parseOptgroup(optgroup) {
 		return {
-			title: optgroup.label,
+			label: optgroup.label,
 			options: map(optgroup.children, function(option) {
 				return parseOption(option);
 			})
