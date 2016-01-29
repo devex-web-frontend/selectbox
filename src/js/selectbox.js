@@ -75,6 +75,9 @@ var Selectbox = (function(DX, window, document, undefined) {
 		return element ? element.className.split(' ') : [];
 	}
 
+	function getDataModifier(element) {
+		return element ? element.data.dataset.modifier : [];
+	}
 	/**
 	 * Creates new selectbox component
 	 * @constructor Selectbox
@@ -102,6 +105,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 		 */
 		function init() {
 			var dropDownClassName = splitClassName(select);
+			var dataModifier = select.dataset.modifier;
 			selectBoxConfig = Object.assign({}, defaults, customSelectBoxConfig);
 			permanentBlockClassNames = select.className;
 			select.className = '';
@@ -109,7 +113,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 			selectId = select.id || DX.String.createRandomId();
 			select.id = '';
 
-			dropDownClassName.push(CN_SELECTBOX);
+			dropDownClassName.push(dataModifier);
 
 			initAppearance();
 
