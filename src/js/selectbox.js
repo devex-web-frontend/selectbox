@@ -10,7 +10,7 @@
  * @namespace
  */
 
-var Selectbox = (function(DX, window, document, undefined) {
+var Selectbox = (function(DX) {
 	'use strict';
 
 	var CN_SELECTBOX = 'selectBox',
@@ -377,7 +377,7 @@ var Selectbox = (function(DX, window, document, undefined) {
 
 		init();
 	};
-})(DX, window, document);
+})(DX);
 
 /** @constant
  * @type {string}
