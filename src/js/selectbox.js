@@ -96,7 +96,7 @@ var Selectbox = (function(DX) {
 			flatData;
 
 		/**
-		 * Triggers when electbox is created
+		 * Triggers when selectbox is created
 		 *
 		 * @event selectbox:created
 		 */
@@ -205,6 +205,17 @@ var Selectbox = (function(DX) {
 			}, true);
 			select.addEventListener('DOMNodeInserted', optionListModificationHandler);
 			select.addEventListener('DOMNodeRemoved', optionListModificationHandler);
+		}
+		/**
+		 * Triggers when selectbox is destroyed
+		 *
+		 * @event selectbox:destroyed
+		 */
+		function destroy() {
+			block.remove();
+			dropDown.getBlock().remove()
+
+			DX.Event.trigger(select, Selectbox.E_DESTROYED);
 		}
 
 		/**
@@ -391,6 +402,12 @@ Selectbox.E_CREATED = 'selectbox:created';
  * @memberof Selectbox
  */
 Selectbox.E_CHANGED = 'selectbox:changed';
+/** @constant
+ * @type {string}
+ * @default
+ * @memberof Selectbox
+ */
+Selectbox.E_DESTROYED = 'selectbox:destroyed';
 /** @constant
  * @type {string}
  * @default
