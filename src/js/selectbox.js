@@ -176,33 +176,17 @@ var Selectbox = (function(DX) {
 
 			select.addEventListener('blur', removeFocusState);
 
-			select.addEventListener('change', function(e) {
-				setIndexBySelectedIndex();
-			});
+			select.addEventListener('change', setIndexBySelectedIndex);
 
-			block.addEventListener('touchend', function(e) {
-				toggleDropdown();
+			block.addEventListener('touchend', blockTouchendHandler, true);
 
-				e.preventDefault();
-			}, true);
+			block.addEventListener('click', toggleDropdown, true);
 
-			block.addEventListener('click', function(e) {
-				toggleDropdown();
-			}, true);
-
-			dropDownBlock.addEventListener(DropDown.E_CHANGED, function() {
-				var index = dropDown.getSelectedIndex();
-
-				select.selectedIndex = index;
-				setSelectedByIndex(index);
-				DX.Event.trigger(select, Selectbox.E_CHANGED);
-			}, true);
+			dropDownBlock.addEventListener(DropDown.E_CHANGED, blockChangedHandler, true);
 
 			dropDownBlock.addEventListener(DropDown.E_SHOWN, setActiveState);
 			dropDownBlock.addEventListener(DropDown.E_HIDDEN, removeActiveState);
-			select.addEventListener(Selectbox.E_CHANGE_VALUE, function() {
-				setIndexBySelectedIndex();
-			}, true);
+			select.addEventListener(Selectbox.E_CHANGE_VALUE, setIndexBySelectedIndex, true);
 			select.addEventListener('DOMNodeInserted', optionListModificationHandler);
 			select.addEventListener('DOMNodeRemoved', optionListModificationHandler);
 		}
@@ -212,10 +196,32 @@ var Selectbox = (function(DX) {
 		 * @event selectbox:destroyed
 		 */
 		function destroy() {
+			removeListeners();
 			block.remove();
-			dropDown.getBlock().remove()
+			dropDown.destroy();
 
 			DX.Event.trigger(select, Selectbox.E_DESTROYED);
+		}
+		function removeListeners() {
+			var dropDownBlock = dropDown.getBlock();
+
+			select.removeEventListener('focus', setFocusState);
+
+			select.removeEventListener('blur', removeFocusState);
+
+			select.removeEventListener('change', setIndexBySelectedIndex);
+
+			block.removeEventListener('touchend', blockTouchendHandler, true);
+
+			block.removeEventListener('click', toggleDropdown, true);
+
+			dropDownBlock.removeEventListener(DropDown.E_CHANGED, blockChangedHandler, true);
+
+			dropDownBlock.removeEventListener(DropDown.E_SHOWN, setActiveState);
+			dropDownBlock.removeEventListener(DropDown.E_HIDDEN, removeActiveState);
+			select.removeEventListener(Selectbox.E_CHANGE_VALUE, setIndexBySelectedIndex, true);
+			select.removeEventListener('DOMNodeInserted', optionListModificationHandler);
+			select.removeEventListener('DOMNodeRemoved', optionListModificationHandler);
 		}
 
 		/**
@@ -297,6 +303,20 @@ var Selectbox = (function(DX) {
 			window.clearTimeout(updateDelay);
 
 			updateDelay = window.setTimeout(updateData, UPDATE_DELAY);
+		}
+
+		function blockTouchendHandler(e) {
+			toggleDropdown();
+
+			e.preventDefault();
+		}
+
+		function blockChangedHandler() {
+			var index = dropDown.getSelectedIndex();
+
+			select.selectedIndex = index;
+			setSelectedByIndex(index);
+			DX.Event.trigger(select, Selectbox.E_CHANGED);
 		}
 
 		function flattenData() {
