@@ -197,10 +197,9 @@ var Selectbox = (function(DX) {
 		 */
 		function destroy() {
 			removeListeners();
+			DX.Event.trigger(select, Selectbox.E_DESTROYED);
 			block.remove();
 			dropDown.destroy();
-
-			DX.Event.trigger(select, Selectbox.E_DESTROYED);
 		}
 		function removeListeners() {
 			var dropDownBlock = dropDown.getBlock();
