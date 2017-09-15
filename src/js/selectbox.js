@@ -383,6 +383,12 @@ var Selectbox = (function(DX) {
 			return selectedItem ? selectedItem.value : '';
 		}
 
+		/**
+		 * Destroying selectbox component and its dropdown
+		 * @method destroy
+		 */
+		this.destroy = destroy;
+
 		this.getValue = getValue;
 		this.getText = getText;
 		this.updateData = updateData;
