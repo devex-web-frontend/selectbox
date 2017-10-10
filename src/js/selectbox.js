@@ -146,7 +146,7 @@ var Selectbox = (function(DX) {
 			});
 		}
 
-		function removeBlock() {
+		function removeAppearence() {
 			var parent = DX.Dom.getParent(block);
 			parent.insertBefore(select, block);
 			block.remove();
@@ -204,7 +204,7 @@ var Selectbox = (function(DX) {
 		function destroy() {
 			removeListeners();
 			DX.Event.trigger(select, Selectbox.E_DESTROYED);
-			removeBlock();
+			removeAppearence();
 			dropDown.destroy();
 		}
 		function removeListeners() {
