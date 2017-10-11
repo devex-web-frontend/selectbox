@@ -178,6 +178,8 @@ var Selectbox = (function(DX) {
 		function initListeners() {
 			var dropDownBlock = dropDown.getBlock();
 
+			select.addEventListener(Selectbox.E_DESTROY, destroy);
+
 			select.addEventListener('focus', setFocusState);
 
 			select.addEventListener('blur', removeFocusState);
@@ -209,6 +211,8 @@ var Selectbox = (function(DX) {
 		}
 		function removeListeners() {
 			var dropDownBlock = dropDown.getBlock();
+
+			select.removeEventListener(Selectbox.E_DESTROY, destroy);
 
 			select.removeEventListener('focus', setFocusState);
 
@@ -427,6 +431,12 @@ var Selectbox = (function(DX) {
  * @memberof Selectbox
  */
 Selectbox.E_CREATED = 'selectbox:created';
+/** @constant
+ * @type {string}
+ * @default
+ * @memberof Selectbox
+ */
+Selectbox.E_DESTROY = 'selectbox:destroy';
 /** @constant
  * @type {string}
  * @default

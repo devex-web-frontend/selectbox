@@ -21,13 +21,40 @@
 
 </head>
 <body>
+<button id="Init">Init</button>
+<button id="DestroyWithEvent">Destroy with event</button>
+<button id="DestroyWithInstance">Destroy with instance</button>
+
 <select name="test" id="test">
 	<option value="1" class="opt1">first</option>
 	<option value="2" class="opt2">second</option>
 	<option value="3" class="opt3">last</option>
 </select>
+
 <script type="text/javascript">
-	new Selectbox(document.getElementById('test'));
+	var select = document.getElementById('test'),
+		theSelectBox,
+		buttonInit = DX.$('Init'),
+		buttonDestroyWithEvent = DX.$('DestroyWithEvent'),
+		buttonDestroyWithInstance = DX.$('DestroyWithInstance');
+
+	buttonInit.addEventListener('click', function() {
+		if (typeof theSelectBox === 'undefined') {
+			theSelectBox = new Selectbox(select);
+		}
+	});
+
+	buttonDestroyWithInstance.addEventListener('click', function() {
+		if (typeof theSelectBox !== 'undefined') {
+			theSelectBox.destroy();
+			theSelectBox = undefined;
+		}
+	});
+
+	buttonDestroyWithEvent.addEventListener('click', function() {
+		DX.Event.trigger(select, Selectbox.E_DESTROY);
+		theSelectBox = undefined;
+	});
 </script>
 </body>
 </html>
