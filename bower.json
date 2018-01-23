@@ -15,6 +15,6 @@
   "dependencies": {
     "dxjs": "devex-web-frontend/dxjs#^2.0.3",
     "dropdown": "devex-web-frontend/dropdown#^2.9.0",
-    "scrollable": "devex-web-frontend/scrollable"
+    "scrollable": "devex-web-frontend/scrollable#^6.2.11"
   }
 }
