@@ -195,7 +195,7 @@ var Selectbox = (function(DX) {
                     height = options[0].offsetHeight * 5;
                 }
 
-                element.style.height = height + 10 + 'px';
+                element.style.height = height + 'px';
                 scrollElement.style.height = height + 'px';
             }
         }
