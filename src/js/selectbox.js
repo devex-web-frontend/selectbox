@@ -177,7 +177,7 @@ var Selectbox = (function(DX) {
             var options = element.querySelectorAll('.dropDown--option');
             var scrollBlock = element.querySelector('.dropDown--listWrap');
 
-            if (options.length > 5 && selectBoxConfig.isScrollable) {
+            if (options.length > selectBoxConfig.countItems && selectBoxConfig.isScrollable) {
                 var scroll = new Scrollable(scrollBlock);
             }
         }
@@ -189,10 +189,10 @@ var Selectbox = (function(DX) {
             var options = element.querySelectorAll('.dropDown--option');
             var scrollElement = element.querySelector('.scrollable--wrapper');
 
-            if (options.length > 5 && selectBoxConfig.isScrollable) {
+            if (options.length > selectBoxConfig.countItems && selectBoxConfig.isScrollable) {
 
                 for (i; i < options.length; i++) {
-                    height = options[0].offsetHeight * 5;
+                    height = options[0].offsetHeight * selectBoxConfig.countItems;
                 }
 
                 element.style.height = height + 'px';
