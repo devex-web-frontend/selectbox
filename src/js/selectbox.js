@@ -38,7 +38,9 @@ var Selectbox = (function(DX) {
 				textContent: '',
 				className: ''
 			},
-			labelTmpl: '{%= text %}'
+			labelTmpl: '{%= text %}',
+			isScrollable: false,
+            countItems: 5
 		};
 
 	function map(collection, callback) {
