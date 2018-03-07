@@ -38,9 +38,7 @@ var Selectbox = (function(DX) {
 				textContent: '',
 				className: ''
 			},
-			labelTmpl: '{%= text %}',
-			isScrollable: false,
-            countItems: 5
+			labelTmpl: '{%= text %}'
 		};
 
 	function map(collection, callback) {
@@ -127,8 +125,6 @@ var Selectbox = (function(DX) {
 					dropDown: dropDown.getBlock()
 				}
 			});
-
-            addScrolling(dropDown);
 		}
 
 		function initAppearance() {
@@ -174,34 +170,6 @@ var Selectbox = (function(DX) {
 			block.className = classNames.join(' ');
 		}
 
-        function addScrolling(dropDown) {
-            var element = dropDown.getBlock();
-            var options = element.querySelectorAll('.dropDown--option');
-            var scrollBlock = element.querySelector('.dropDown--listWrap');
-
-            if (options.length > selectBoxConfig.countItems && selectBoxConfig.isScrollable) {
-                var scroll = new Scrollable(scrollBlock);
-            }
-        }
-
-        function setScrollHeight(e) {
-            var element = e.target,
-                height = 0,
-                i = 0;
-            var options = element.querySelectorAll('.dropDown--option');
-            var scrollElement = element.querySelector('.scrollable--wrapper');
-
-            if (options.length > selectBoxConfig.countItems && selectBoxConfig.isScrollable) {
-
-                for (i; i < options.length; i++) {
-                    height = options[0].offsetHeight * selectBoxConfig.countItems;
-                }
-
-                element.style.height = height + 'px';
-                scrollElement.style.height = height + 'px';
-            }
-        }
-
 		/**
 		 * Triggers when selectbox is changed
 		 *
@@ -225,7 +193,6 @@ var Selectbox = (function(DX) {
 			dropDownBlock.addEventListener(DropDown.E_CHANGED, blockChangedHandler, true);
 
 			dropDownBlock.addEventListener(DropDown.E_SHOWN, setActiveState);
-            dropDownBlock.addEventListener(DropDown.E_SHOWN, setScrollHeight);
 			dropDownBlock.addEventListener(DropDown.E_HIDDEN, removeActiveState);
 			select.addEventListener(Selectbox.E_CHANGE_VALUE, setIndexBySelectedIndex, true);
 			select.addEventListener('DOMNodeInserted', optionListModificationHandler);
