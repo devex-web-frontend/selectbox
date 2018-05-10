@@ -51,13 +51,16 @@ var Selectbox = (function(DX) {
 		});
 	}
 
-	function parseOptgroup(optgroup) {
-		return {
-			label: optgroup.label,
-			options: map(optgroup.children, function(option) {
+	function parseOptgroup(optgroupNode) {
+		var optgroup = {
+			label: optgroupNode.label,
+			data: DX.Dom.getData(optgroupNode),
+			options: map(optgroupNode.children, function(option) {
 				return parseOption(option);
 			})
 		};
+		optgroup = Object.assign({}, optgroup, optgroup.data);
+		return optgroup;
 	}
 
 	function parseOption(optionNode) {
