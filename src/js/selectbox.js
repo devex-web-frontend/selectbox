@@ -52,12 +52,14 @@ var Selectbox = (function(DX) {
 	}
 
 	function parseOptgroup(optgroup) {
-		return {
+		const data = DX.Dom.getData(optgroup);
+		return Object.assign({}, data, {
 			label: optgroup.label,
+			className: optgroup.className,
 			options: map(optgroup.children, function(option) {
 				return parseOption(option);
 			})
-		};
+		});
 	}
 
 	function parseOption(optionNode) {

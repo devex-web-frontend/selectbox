@@ -22,17 +22,18 @@
 </head>
 <body>
 <select name="test" id="test">
-	<optgroup label="123">
-	<option value="1" class="opt1">first</option>
-	<option value="2" class="opt2">second</option>
-	<option value="3" class="opt3">last</option>
+	<optgroup label="123" data-type='live' class="optiogroup">
+		<option value="1" class="opt1">first</option>
+		<option value="2" class="opt2">second</option>
+		<option value="3" class="opt3">last</option>
 	</optgroup>
-	<optgroup label="456">
-	<option value="1" class="opt1">so first</option>
-	<option value="2" class="opt2">such second</option>
-	<option value="3" class="opt3">wow last</option>
+	<optgroup label="456" data-type='demo' class="optiogroup">
+		<option value="1" class="opt1">so first</option>
+		<option value="2" class="opt2">such second</option>
+		<option value="3" class="opt3">wow last</option>
 	</optgroup>
 </select>
+
 <select name="test2" id="test2">
 </select>
 
@@ -40,6 +41,8 @@
 
 	var data = [
 		{
+			label: 'live',
+			type: 'live',
 			options: [
 				{"value": "1", "text": "wow"},
 				{"value": "2", "text": "such"},
@@ -47,7 +50,8 @@
 			]
 		},
 		{
-			label: 'qqq',
+			label: 'demo',
+			type: 'live',
 			options: [
 				{"value": "4", "text": "wow2"},
 				{"value": "5", "text": "such2"},
@@ -56,8 +60,18 @@
 		}
 	];
 
-	new Selectbox(document.getElementById('test'));
-	new Selectbox(document.getElementById('test2'), data);
+	new Selectbox(document.getElementById('test'), null, {
+		groupTmpl: `<li class="dropDown--group dropDown--group-{%= type %}  {%= className %}">
+				<span class="dropDown--groupTitle">{%= label %}</span>
+				<ul>{%= optionList %}</ul>
+			</li>`
+	});
+	new Selectbox(document.getElementById('test2'), data, {
+		groupTmpl: `<li class="dropDown--group dropDown--group-{%= type %}">
+				<span class="dropDown--groupTitle">{%= label %}</span>
+				<ul>{%= optionList %}</ul>
+			</li>`
+	});
 </script>
 </body>
 </html>
